@@ -11,6 +11,7 @@ import SearchBar from "./SearchBar";
 import { Project } from "@/app/page";
 import { convertTimestampToDate, monthNumberToString, concatenateStringToLength, stringToSlug, openInNewTab } from "../lib/helpers";
 import { DefaultChip } from "./Chips";
+import { DefaultSpinner } from "./Loaders";
 
 interface ProjectListViewProps {
     projects: Project[];
@@ -29,12 +30,14 @@ export default function ProjectListView({ projects }: ProjectListViewProps) {
                         })
                     }
                 </div>
+
+
             </section>
-            <div className="absolute left-0 bottom-0 py-4 md:py-8 w-full ">
+            {/* <div className="absolute left-0 bottom-0 py-4 md:py-8 w-full ">
                 <div className="mx-auto w-full sm:w-[400px] px-16">
                     <SearchBar />
                 </div>
-            </div>
+            </div> */}
         </>
     );
 }
@@ -63,30 +66,22 @@ const ListCard = ({ project }: ListCardProps) => {
     }
      
     return (
-        <div className="relative cursor-pointer flex gap-4 overflow-hidden bg-white border rounded-md p-4 shadow-md">
+        <div className="relative h-40 cursor-pointer flex gap-4 overflow-hidden bg-white border rounded-md p-4 shadow-md">
 
             <Link href={`/${stringToSlug(project.id)}`} className="flex gap-4 w-full pr-8">
 
-                {
-                    project.coverPhoto && 
-                    
-                    <div className="aspect-square w-28 h-28 rounded-md">
-                        <Image src={project.coverPhoto} alt="project cover image" className="h-full w-full" width={100} height={100} />
-                    </div>
-                }
-
                 <div className="flex flex-col w-full justify-between">
                     <div className="flex w-full items-center justify-between">
-                        <span className="text-xl font-medium">{project.title}</span>
+                        <span className="text-lg sm:text-xl font-medium">{project.title}</span>
                     </div>
                     
-                    <div className="flex flex-col font-light w-full justify-between items-stretch">
+                    <div className="flex flex-col font-light w-full h-full justify-between items-stretch">
                         {
                             !showDetails 
                             ?
-                            <div className="flex flex-col justify-between">
-                                <p className="text-sm hidden sm:block h-full">{brief}</p>
-                                { dateObject && <span className="font-light opacity-50">{concatenateStringToLength(monthNumberToString(dateObject.month), 3)} {dateObject.year}</span> }                            
+                            <div className="flex flex-col h-full justify-between">
+                                <p className="text-sm md:text-base h-full">{brief}</p>
+                                { dateObject && <span className="font-light opacity-50 text-sm">{concatenateStringToLength(monthNumberToString(dateObject.month), 3)} {dateObject.year}</span> }                            
                             </div>
                             :
                             <>

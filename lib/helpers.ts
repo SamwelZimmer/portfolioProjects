@@ -9,10 +9,10 @@ type DateObject = {
     year: number;
 };
 
-export function convertTimestampToDate(timestamp: Timestamp): DateObject {
+export function convertTimestampToDate(timestamp: string): DateObject {
 
     // Convert seconds to milliseconds and create a Date object
-    const date = new Date(timestamp.seconds * 1000);
+    const date = new Date(timestamp);
     
     // Extract the day, month, and year from the Date object
     const day = date.getUTCDate();
