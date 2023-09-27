@@ -8,7 +8,7 @@ import { FiExternalLink } from "react-icons/fi";
 import { getProject } from '../../../lib/firebase';
 import BackButton from '../../../components/BackButton';
 import { Project } from '../page';
-import { convertTimestampToDate, concatenateStringToLength, monthNumberToString } from '../../../lib/helpers';
+import { convertTimestampToDate, concatenateStringToLength, monthNumberToString, openInNewTab } from '../../../lib/helpers';
 
 export default function ProjectPage() {
     const [content, setContent] = useState<Project | null>(null);
@@ -45,7 +45,7 @@ export default function ProjectPage() {
 
                 <div className='w-full flex justify-between items-center'>
                     { dateObject && <span className="font-light opacity-50 w-max">{concatenateStringToLength(monthNumberToString(dateObject.month), 3)} {dateObject.year}</span> }  
-                    { content?.link && <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className='opacity-50 hover:opacity-20'><FiExternalLink size={24} /></motion.button> }                          
+                    { content?.link && <motion.button onClick={() => openInNewTab(content?.link ? content.link : "")} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className='opacity-50 hover:opacity-20'><FiExternalLink size={24} /></motion.button> }                          
                 </div>
 
             </main>

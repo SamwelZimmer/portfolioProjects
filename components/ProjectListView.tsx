@@ -19,7 +19,7 @@ interface ProjectListViewProps {
 export default function ProjectListView({ projects }: ProjectListViewProps) {
     return (
         <>
-            <section className="w-full h-full pt-4 overflow-y-scroll">
+            <section className="w-full h-full pt-4 overflow-scroll">
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mx-auto w-full sm:w-[400px] md:w-[600px] lg:w-[800px] xl:w-[1000px] px-4 pb-20 md:pb-28">
                     {
                         projects.map((project, i) => {
@@ -67,7 +67,9 @@ const ListCard = ({ project }: ListCardProps) => {
 
             <Link href={`/${stringToSlug(project.id)}`} className="flex gap-4 w-full pr-8">
 
-                {project.coverPhoto && 
+                {
+                    project.coverPhoto && 
+                    
                     <div className="aspect-square w-28 h-28 rounded-md">
                         <Image src={project.coverPhoto} alt="project cover image" className="h-full w-full" width={100} height={100} />
                     </div>
@@ -78,14 +80,14 @@ const ListCard = ({ project }: ListCardProps) => {
                         <span className="text-xl font-medium">{project.title}</span>
                     </div>
                     
-                    <div className="flex flex-col font-light h-full w-full justify-between">
+                    <div className="flex flex-col font-light w-full justify-between items-stretch">
                         {
                             !showDetails 
                             ?
-                            <>
-                                <p className="text-sm hidden sm:block">{brief}</p>
-                                { dateObject && <span className="font-light opacity-50 w-max">{concatenateStringToLength(monthNumberToString(dateObject.month), 3)} {dateObject.year}</span> }                            
-                            </>
+                            <div className="flex flex-col justify-between">
+                                <p className="text-sm hidden sm:block h-full">{brief}</p>
+                                { dateObject && <span className="font-light opacity-50">{concatenateStringToLength(monthNumberToString(dateObject.month), 3)} {dateObject.year}</span> }                            
+                            </div>
                             :
                             <>
                                 <span className="text-sm">the skills required goes here</span>
@@ -104,11 +106,11 @@ const ListCard = ({ project }: ListCardProps) => {
                 </div>
             </Link>
             
-            {/* {
+            {
                 project.link &&
 
                 <motion.button 
-                    onClick={openInNewTab(project.link)} 
+                    onClick={() => openInNewTab(project?.link ? project?.link : "")} 
                     className="absolute right-8 bottom-0 p-4 rounded-md opacity-50 hover:opacity-30" 
                     whileHover={{ scale: 1.1 }} 
                     whileTap={{ scale: 0.9 }}
@@ -116,7 +118,7 @@ const ListCard = ({ project }: ListCardProps) => {
                     <FiExternalLink size={20} />
                 </motion.button>
 
-            } */}
+            }
 
             <motion.button 
                 onClick={handleInfoClick} 
