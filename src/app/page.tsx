@@ -16,12 +16,24 @@ export interface Project {
   categories?: Array<string>;
 }
 
+async function getProjects(): Promise<Project[]> {
+  const allItems: Project[] = await getAllProjects();
+
+  // sort the items based on the datetime field
+  return allItems.sort((a, b) => {
+    // convert datetime to milliseconds for comparison
+    const timestampA = (a.datetime?.seconds || 0) * 1000 + (a.datetime?.nanoseconds || 0) / 1_000_000;
+    const timestampB = (b.datetime?.seconds || 0) * 1000 + (b.datetime?.nanoseconds || 0) / 1_000_000;
+
+    // sort in descending order
+    return timestampB - timestampA;
+  });
+}
+
+
 export default async function Home() {
 
-  const projects: Project[] = await getAllProjects();
-
-  console.log(projects)
-
+  const projects: Project[] = await getProjects();
 
   return (
     <>

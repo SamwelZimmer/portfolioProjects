@@ -64,5 +64,10 @@ export const stringToSlug = (str: string): string => {
         .replace(/-+/g, '-'); // collapse dashes
 };
 
+export const openInNewTab = (url: string): void => {
+    window.open(url, '_blank');
+}
+  
+
 
   

@@ -16,7 +16,7 @@ export default function ViewToggle() {
     return (
         <div onClick={toggleSwitch} className="flex items-center gap-4">
             <PiSlideshow size={24} />
-            <div className="switch flex justify-start rounded-full p-1 w-16 h-8 bg-black/5 cursor-pointer border border-black/20" data-ison={listView}>
+            <div className="switch flex justify-start rounded-full p-1 w-12 sm:w-16 h-6 sm:h-8 bg-black/5 cursor-pointer border border-black/20" data-ison={listView}>
                 <motion.div className="bg-black/70 rounded-full h-full aspect-square"  layout transition={spring} />
             </div>
             <PiListBulletsLight size={24} />
