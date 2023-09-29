@@ -47,8 +47,8 @@ return (
     <>
         <div className="flex gap-4 w-max py-2">
             {projectDetails.map((project, i) => (
-                <div className="h-full w-96">
-                    <ListCard key={i} project={project} />
+                <div key={i} className="h-full w-96">
+                    <ListCard project={project} />
                 </div>
             ))}
         </div>
