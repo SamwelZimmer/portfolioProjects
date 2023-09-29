@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* so all of the markdown features are available */
+.markdown > * {
+    all: revert;
+}
+
 body::-webkit-scrollbar {
     display: none; /* for Chrome, Safari, and newer versions of Opera */
 }

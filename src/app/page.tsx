@@ -8,10 +8,11 @@ import FilterMenu from '../../components/FilterMenu';
 
 export interface Project {
   id: string;
+  datetime: string;
   title?: string;
+  body?: string;
   summary?: string;
   coverPhoto?: string;
-  datetime?: string;
   tags?: string;
   link?: string;
   categories?: Array<string>;
@@ -46,7 +47,6 @@ export default async function Home() {
       </main>
 
       <FilterMenu />
-
     </>
 
   )

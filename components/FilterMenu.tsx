@@ -32,7 +32,7 @@ export default function FilterMenu() {
                 onMouseEnter={() => setOpen(true)}  
                 onMouseLeave={() => setOpen(false)}       
             >
-                <div  onClick={() => setOpen(!open)} className='absolute -top-10 left-1/2 -translate-x-1/2 border border-b-white bg-white w-32 rounded-t-lg flex justify-center items-center p-2 text-gray-400 font-light cursor-pointer'>
+                <div className='absolute -top-10 left-1/2 -translate-x-1/2 border border-b-white bg-white w-32 rounded-t-lg flex justify-center items-center p-2 text-gray-400 font-light cursor-pointer'>
                     filter
                 </div>
 
@@ -41,6 +41,8 @@ export default function FilterMenu() {
                     <span>some congent eith go</span>
                     <span>some congent eith go</span>
                 </div>
+
+                <div className='absolute top-full w-full bg-white h-32' />
             </motion.div>
 
 
