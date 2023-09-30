@@ -5,11 +5,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { FiExternalLink } from "react-icons/fi";
+import { useRouter } from "next/navigation";
 
 import { Project } from "@/app/page";
 
 import { convertTimestampToDate, monthNumberToString, concatenateStringToLength, stringToSlug, openInNewTab } from "../lib/helpers";
-import { DefaultChip } from "./Chips";
+import { CategoryChip } from "./Chips";
 
 interface ListCardProps {
     project: Project;
@@ -18,6 +19,8 @@ interface ListCardProps {
 export const ListCard = ({ project }: ListCardProps) => {
 
     const [showDetails, setShowDetails] = useState(false);
+
+    const router = useRouter();
 
     let dateObject;
     if (project?.datetime) {
@@ -35,9 +38,9 @@ export const ListCard = ({ project }: ListCardProps) => {
     }
      
     return (
-        <div className="relative h-40 cursor-pointer flex gap-4 overflow-hidden bg-white border rounded-md p-4 shadow-md">
+        <div className="relative h-full cursor-pointer flex gap-4 overflow-hidden bg-white border rounded-md p-4 shadow-md">
 
-            <Link href={`/${stringToSlug(project.id)}`} className="flex gap-4 w-full pr-8">
+            <div onClick={() => router.push(`/${stringToSlug(project.id)}`)} className="flex gap-4 w-full pr-8">
 
                 <div className="flex flex-col w-full justify-between">
                     <div className="flex w-full items-center justify-between">
@@ -58,7 +61,7 @@ export const ListCard = ({ project }: ListCardProps) => {
                                 <div className="flex items-center w-max overflow-scroll">
                                     { project?.categories?.map((tag, index) => (
                                         <div key={index} className="">
-                                            <DefaultChip text={tag} index={index} />
+                                            <CategoryChip text={tag} index={index} />
                                         </div>
                                     )) }
                                     
@@ -68,7 +71,7 @@ export const ListCard = ({ project }: ListCardProps) => {
                     </div>
 
                 </div>
-            </Link>
+            </div>
             
             {
                 project.link &&

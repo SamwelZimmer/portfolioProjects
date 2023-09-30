@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from 'next/image';
 
 import Navbar from '../../components/Navbar';
 import ViewChooser from '../../components/ViewChooser';
@@ -18,8 +18,25 @@ export interface Project {
   categories?: Array<string>;
 }
 
-async function getProjects(): Promise<Project[]> {
-  const allItems: Project[] = await getAllProjects();
+type Props = {
+  params: {};
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+async function getProjects(categories: string[]): Promise<Project[]> {
+
+  let allItems: Project[] = await getAllProjects();
+
+  if (categories.length !== 0) {
+    allItems = allItems.filter(item => {
+        if (item.categories) {
+            return item.categories.some(category => 
+                categories.includes(category)
+            );
+        }
+        return false;  // If item doesn't have categories, discard it
+    });
+  }
 
   // Sort the items based on the datetime field
   return allItems.sort((a, b) => {
@@ -32,9 +49,16 @@ async function getProjects(): Promise<Project[]> {
   });
 }
 
-export default async function Home() {
+export default async function Home(props: Props) {
 
-  const projects: Project[] = await getProjects();
+  const searchParams = props.searchParams;
+  
+  let categoriesArray: string[] = [];
+  if (typeof searchParams.categories === 'string') {
+    categoriesArray = searchParams.categories.split(',');
+  };
+
+  const projects: Project[] = await getProjects(categoriesArray);
 
   return (
     <>

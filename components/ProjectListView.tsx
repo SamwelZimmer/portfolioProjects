@@ -15,7 +15,9 @@ export default function ProjectListView({ projects }: ProjectListViewProps) {
                     {
                         projects.map((project, i) => {
                             return (
-                                <ListCard key={i} project={project} />
+                                <div key={i} className="h-40">
+                                    <ListCard project={project} />
+                                </div>
                             );
                         })
                     }

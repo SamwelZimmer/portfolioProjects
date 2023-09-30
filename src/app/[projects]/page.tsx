@@ -13,7 +13,7 @@ import SimilarProjects from '../../../components/SimilarProjects';
 import Home, { Project } from '../page';
 import { convertTimestampToDate, concatenateStringToLength, monthNumberToString, openInNewTab } from '../../../lib/helpers';
 import { DefaultSpinner, ImagePlaceholder } from '../../../components/Loaders';
-import { DefaultChip } from '../../../components/Chips';
+import { CategoryChip } from '../../../components/Chips';
 import HomeButton from '../../../components/HomeButton';
 
 export default function ProjectPage() {
@@ -65,8 +65,8 @@ export default function ProjectPage() {
                         </div>
                         
                         { content?.coverPhoto &&
-                            <div className='w-full relative rounded-md overflow-clip border'>
-                                <div className={`absolute inset-0 ${imageLoaded ? 'hidden' : 'block'} my-auto`}>
+                            <div className='w-full flex relative rounded-md overflow-clip border items-center justify-center'>
+                                <div className={`absolute ${imageLoaded ? 'hidden' : 'block'} w-[calc(100%-1rem)] top-1/2 -translate-x-1/2 left-1/2 -translate-y-1/2`}>
                                     <ImagePlaceholder />
                                 </div>
                                 <Image
@@ -86,17 +86,22 @@ export default function ProjectPage() {
                             </ReactMarkdown>
                         )}
 
-                        <div className="flex items-center w-max overflow-scroll">
-                            { content?.categories?.map((tag, index) => (
-                                <div key={index} className="">
-                                    <DefaultChip text={tag} index={index} />
-                                </div>
-                            )) }
+                        <div className='flex flex-col gap-2'>
+                            <span className='opacity-50 font-light'>project categories...</span>
+
+                            <div className="flex items-center w-max overflow-scroll">
+                                { content?.categories?.map((tag, index) => (
+                                    <div key={index} className="">
+                                        <CategoryChip text={tag} index={index} />
+                                    </div>
+                                )) }
+                            </div>
                         </div>
+
 
                         <div className='flex flex-col'>
                             <span className='opacity-50 font-light'>check out some similar projects...</span>
-                            <div className='overflow-scroll'>
+                            <div className='scrollable-but-hidden-scrollbar overflow-scroll'>
                                 <SimilarProjects docId={content.id} />
                             </div>
                         </div>
