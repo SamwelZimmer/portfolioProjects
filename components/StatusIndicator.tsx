@@ -1,5 +1,6 @@
 import { AiFillCheckCircle, AiOutlineCalendar } from "react-icons/ai";
 import { GiSinkingShip } from "react-icons/gi";
+import { CgSandClock } from "react-icons/cg";
 
 import { StatusType } from "@/app/page";
 
@@ -25,11 +26,13 @@ const statusIcons: {
     "icon": {
         "completed": <AiFillCheckCircle size={20} />,
         "abandoned": <GiSinkingShip size={20} />,
-        "postponed": <AiOutlineCalendar size={20} />
+        "postponed": <AiOutlineCalendar size={20} />,
+        "ongoing": <CgSandClock size={20} />,
     },
     "colour": {
         "completed": "#05472A",
         "abandoned": "#8B0000",
-        "postponed": "orange",
+        "postponed": "#d97614",
+        "ongoing": "#1616a8",
     }
 };

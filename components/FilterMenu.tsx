@@ -106,5 +106,5 @@ export default function FilterMenu() {
 const categories = {
     "projectTypes": ["data science", "visualisation", "analytics", "data engineering", "software development", "game", "web", "frontend", "full-stack"],
     "purposes": ["university", "competition", "tutorial", "venture"],
-    "technologies": ["python", "cloud", "MERN"],
+    "technologies": ["python", "cloud", "MERN", "vector database", "AI", "machine learning", "3D", "blockchain"],
 };

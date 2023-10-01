@@ -6,7 +6,7 @@ import ViewChooser from '../../components/ViewChooser';
 import { getAllProjects } from '../../lib/firebase';
 import FilterMenu from '../../components/FilterMenu';
 
-export type StatusType = "completed" | "abandoned" | "postponed";
+export type StatusType = "completed" | "abandoned" | "postponed" | "ongoing";
 
 export interface Project {
   id: string;

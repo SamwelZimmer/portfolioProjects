@@ -10,11 +10,12 @@ import ReactMarkdown from 'react-markdown';
 import { getProject } from '../../../lib/firebase';
 import BackButton from '../../../components/BackButton';
 import SimilarProjects from '../../../components/SimilarProjects';
-import Home, { Project } from '../page';
+import { Project } from '../page';
 import { convertTimestampToDate, concatenateStringToLength, monthNumberToString, openInNewTab } from '../../../lib/helpers';
 import { DefaultSpinner, ImagePlaceholder } from '../../../components/Loaders';
 import { CategoryChip } from '../../../components/Chips';
 import HomeButton from '../../../components/HomeButton';
+import StatusIndicator from '../../../components/StatusIndicator';
 
 export default function ProjectPage() {
     const [content, setContent] = useState<Project | null>(null);
@@ -63,6 +64,8 @@ export default function ProjectPage() {
                             <h1 className='font-medium text-4xl'>{content?.title}</h1>
                             <p>{content?.summary}</p>
                         </div>
+
+                        { content?.status && <div className="my-auto flex gap-2"><span className="opacity-50 font-light">status:</span><StatusIndicator status={content?.status} /></div> }
                         
                         { content?.coverPhoto &&
                             <div className='w-full flex relative rounded-md overflow-clip border items-center justify-center'>
@@ -89,7 +92,7 @@ export default function ProjectPage() {
                         <div className='flex flex-col gap-2'>
                             <span className='opacity-50 font-light'>project categories...</span>
 
-                            <div className="flex items-center w-max overflow-scroll">
+                            <div className="scrollable-but-hidden-scrollbar flex items-center overflow-scroll">
                                 { content?.categories?.map((tag, index) => (
                                     <div key={index} className="">
                                         <CategoryChip text={tag} index={index} />

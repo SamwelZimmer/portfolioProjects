@@ -57,7 +57,7 @@ export const ListCard = ({ project }: ListCardProps) => {
                             </div>
                             :
                             <>
-                                { project?.status && <div className="my-auto"><StatusIndicator status={project?.status} /></div> }
+                                { project?.status && <div className="my-auto flex gap-2"><span className="opacity-50 font-light">status:</span><StatusIndicator status={project?.status} /></div> }
                                 <div className="scrollable-but-hidden-scrollbar flex items-center overflow-scroll">
                                     { project?.categories?.map((tag, index) => (
                                         <div key={index} className="">
@@ -78,7 +78,7 @@ export const ListCard = ({ project }: ListCardProps) => {
 
                 <motion.button 
                     onClick={() => openInNewTab(project?.link ? project?.link : "")} 
-                    className="absolute right-8 bottom-0 p-4 rounded-md opacity-50 hover:opacity-30" 
+                    className="absolute right-0 top-0 p-4 rounded-md opacity-50 hover:opacity-30" 
                     whileHover={{ scale: 1.1 }} 
                     whileTap={{ scale: 0.9 }}
                 >
