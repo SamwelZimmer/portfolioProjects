@@ -8,7 +8,7 @@ import { FiExternalLink } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 
 import { Project } from "@/app/page";
-
+import StatusIndicator from "./StatusIndicator";
 import { convertTimestampToDate, monthNumberToString, concatenateStringToLength, stringToSlug, openInNewTab } from "../lib/helpers";
 import { CategoryChip } from "./Chips";
 
@@ -57,7 +57,7 @@ export const ListCard = ({ project }: ListCardProps) => {
                             </div>
                             :
                             <>
-                                <span className="text-sm">the skills required goes here</span>
+                                { project?.status && <div className="my-auto"><StatusIndicator status={project?.status} /></div> }
                                 <div className="flex items-center w-max overflow-scroll">
                                     { project?.categories?.map((tag, index) => (
                                         <div key={index} className="">

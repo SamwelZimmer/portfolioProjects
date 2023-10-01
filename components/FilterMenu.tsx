@@ -2,11 +2,17 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { useRouter } from "next/navigation";
+
+import { projectCategoriesAtom } from "../atoms/projectCategoriesAtom";
+import { FilterChip, AppliedFiltersChip } from "./Chips";
 
 export default function FilterMenu() {
 
     const [open, setOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
+    const [projectCategories, setProjectCategories] = useRecoilState(projectCategoriesAtom);
 
     useEffect(() => {
         const timerId = setTimeout(() => setIsVisible(true), 2000);
@@ -36,17 +42,61 @@ export default function FilterMenu() {
                     filter
                 </div>
 
-                <div className='flex flex-col p-4'>
-                    <span>a bunch of tags and stuff go here</span>
-                    <span>some congent eith go</span>
-                    <span>some congent eith go</span>
-                </div>
+                <div className="flex flex-col p-4 gap-4">
 
+                    <div className='flex flex-col'>
+                        <span className="font-light opacity-50">project type</span>
+                        <div className="flex flex-row overflow-scroll w-full scrollable-but-hidden-scrollbar">
+                            { categories.projectTypes.map((tag, index) => (
+                                <div key={index} className="w-max">
+                                    <FilterChip text={tag} index={index} />
+                                </div>
+                            )) }
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col'>
+                        <span className="font-light opacity-50">technologies</span>
+                        <div className="flex flex-row overflow-scroll w-full scrollable-but-hidden-scrollbar">
+                            { categories.technologies.map((tag, index) => (
+                                <div key={index} className="w-max">
+                                    <FilterChip text={tag} index={index} />
+                                </div>
+                            )) }
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col'>
+                        <span className="font-light opacity-50">purpose</span>
+                        <div className="flex flex-row overflow-scroll w-full scrollable-but-hidden-scrollbar">
+                            { categories.purposes.map((tag, index) => (
+                                <div key={index} className="w-max">
+                                    <FilterChip text={tag} index={index} />
+                                </div>
+                            )) }
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col'>
+                        <span className="font-light opacity-50">applied filters</span>
+                        <div className="flex flex-row overflow-scroll w-full scrollable-but-hidden-scrollbar">
+                            { projectCategories.length === 0 ? <div className="opacity-30 font-light text-sm py-1">{"("}no filters applied{")"}</div> :
+                                projectCategories.map((tag, index) => (
+                                <div key={index} className="w-max">
+                                    <AppliedFiltersChip text={tag} index={index} />
+                                </div>
+                            )) }
+                        </div>
+                    </div>
+                </div>
                 <div className='absolute top-full w-full bg-white h-32' />
             </motion.div>
-
-
-
         </motion.div>
     );
+};
+
+const categories = {
+    "projectTypes": ["data science", "visualisation", "analytics", "data engineering", "software engineering", "game", "web", "frontend", "full-stack"],
+    "purposes": ["university", "university", "competition", "tutorial", "venture"],
+    "technologies": ["python", "cloud", "MERN"],
 };

@@ -6,11 +6,14 @@ import ViewChooser from '../../components/ViewChooser';
 import { getAllProjects } from '../../lib/firebase';
 import FilterMenu from '../../components/FilterMenu';
 
+export type StatusType = "completed" | "abandoned" | "postponed";
+
 export interface Project {
   id: string;
   datetime: string;
   title?: string;
   body?: string;
+  status?: StatusType;
   summary?: string;
   coverPhoto?: string;
   tags?: string;

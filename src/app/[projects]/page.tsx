@@ -66,7 +66,7 @@ export default function ProjectPage() {
                         
                         { content?.coverPhoto &&
                             <div className='w-full flex relative rounded-md overflow-clip border items-center justify-center'>
-                                <div className={`absolute ${imageLoaded ? 'hidden' : 'block'} w-[calc(100%-1rem)] top-1/2 -translate-x-1/2 left-1/2 -translate-y-1/2`}>
+                                <div className={`absolute ${imageLoaded ? 'hidden' : 'block'} w-[calc(100%-1rem)] my-auto mx-auto`}>
                                     <ImagePlaceholder />
                                 </div>
                                 <Image
