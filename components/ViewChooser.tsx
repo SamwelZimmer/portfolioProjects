@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { listViewAtom } from "../atoms/listViewAtom";
 import { PROJECTS } from "../helpers/projects";
 import ProjectListView from "./ProjectListView";
-import ProjectScrollingView from "./ProjectScrollingView";
+import ProjectGalleryView from "./ProjectGalleryView";
 import { Project } from "@/app/page";
 
 interface ViewChooserProps {
@@ -19,7 +19,7 @@ export default function ViewChooser({ projects }: ViewChooserProps) {
     return (
         <>
             {
-                showListView ? <ProjectListView projects={projects} /> : <ProjectScrollingView projects={PROJECTS}/>
+                showListView ? <ProjectListView projects={projects} /> : <ProjectGalleryView projects={projects}/>
             }
         </>
     );

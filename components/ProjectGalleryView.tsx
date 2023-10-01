@@ -1,19 +1,23 @@
 import InfiniteCarousel from "./InfiniteCarousel";
 
-import { project } from "../helpers/projects";
+import { Project } from "@/app/page";
+import { repeatArrayToLength } from "../lib/helpers";
 
 interface ScrollingViewProps {
-    projects: project[];
+    projects: Project[];
 }
 
-export default function ProjectScrollingView({ projects }: ScrollingViewProps) {
+export default function ProjectGalleryView({ projects }: ScrollingViewProps) {
+
+    const extendedProjects = repeatArrayToLength(projects, 50);
+
     return (
         <>
-            <div className='right-column fixed right-0 top-0 z-20 w-32 h-full'>
+            {/* <div className='right-column fixed right-0 top-0 z-20 w-32 h-full'>
                 <div className='right-grain w-32 h-full'></div>
             </div>
 
-              <div className='left-gradient fixed left-0 top-0 z-20 w-32 h-full ' />
+            <div className='left-gradient fixed left-0 top-0 z-20 w-32 h-full ' /> */}
 
                 {/* <div className='right-column fixed right-0 top-0 z-20 w-32 h-full'>
                     <div className='bg-image w-full h-full absolute' />
@@ -30,9 +34,9 @@ export default function ProjectScrollingView({ projects }: ScrollingViewProps) {
 
             }
             <div className="h-full w-full pt-4">
-                <InfiniteCarousel cards={projects} speed={4} start={0.5} height={30} details={"medium"} />
-                <InfiniteCarousel cards={projects} speed={-6} start={0.1} height={50} details={"large"} />
-                <InfiniteCarousel cards={projects} speed={2} start={0.7} height={20} details={"small"} />
+                <InfiniteCarousel projects={extendedProjects} speed={4} start={0.5} height={30} details={"medium"} />
+                <InfiniteCarousel projects={extendedProjects} speed={-6} start={0.1} height={50} details={"large"} />
+                <InfiniteCarousel projects={extendedProjects} speed={2} start={0.7} height={20} details={"small"} />
             </div>
         </>
     );

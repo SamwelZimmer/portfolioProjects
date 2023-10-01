@@ -68,6 +68,18 @@ export const openInNewTab = (url: string): void => {
     window.open(url, '_blank');
 }
   
+export function repeatArrayToLength<T>(arr: T[], desiredLength: number): T[] {
+  if (desiredLength <= 0) {
+      return [];
+  }
 
+  const result: T[] = [];
+  while (result.length < desiredLength) {
+      result.push(...arr);
+  }
+
+  // If the resulting array is longer than the desired length, trim it
+  return result.slice(0, desiredLength);
+}
 
   

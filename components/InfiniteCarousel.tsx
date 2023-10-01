@@ -3,20 +3,20 @@
 import { ReactElement } from 'react';
 import React, { useRef, useEffect } from 'react';
 
-import { ProjectCardProps } from './ProjectCard';
-import ProjectCard from './ProjectCard';
+import { GalleryCard, GalleryCardProps } from './ProjectCards';
+import { Project } from '@/app/page';
 
 import Gear1 from './gears/Gear1';
 
 interface InfiniteCarouselProps {
-    cards: ProjectCardProps[];
+    projects: Project[];
     speed: number;
     start?: number;
     height: number;
     details?: string;
 };
 
-export default function InfiniteCarousel({ cards, speed, start=0.5, height, details="small" }: InfiniteCarouselProps) {
+export default function InfiniteCarousel({ projects, speed, start=0.5, height, details="small" }: InfiniteCarouselProps) {
     const carouselRef = useRef<HTMLDivElement | null>(null);
     const initialTouchY = useRef<number>(0);  // store initial touch position
 
@@ -97,9 +97,9 @@ export default function InfiniteCarousel({ cards, speed, start=0.5, height, deta
     return (
         // <div ref={carouselRef} className='relative scrollable-but-hidden-scrollbar overflow-x-auto w-full h-full flex bg-slate-200 pt-3 pb-3 my-auto shadow-lg'> 
         <div ref={carouselRef} style={{ height: `${height}%`}} className='relative scrollable-but-hidden-scrollbar overflow-x-auto w-full flex pb-6'> 
-                {cards.map((card, index) => (
-                    <div key={index} className='inline-block px-3 items-center justify-center h-full' >
-                        <ProjectCard {...card} details={details} />
+                {projects.map((project, index) => (
+                    <div key={index} className='inline-block px-3 items-center justify-center h-full w-max' >
+                        <GalleryCard project={project} details={details} />
                     </div>
                 ))}
         </div>
