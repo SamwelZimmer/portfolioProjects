@@ -108,7 +108,6 @@ export default function ProjectPage() {
                                 <SimilarProjects docId={content.id} />
                             </div>
                         </div>
-
                     </main>
 
                 }

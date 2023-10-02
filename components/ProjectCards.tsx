@@ -40,11 +40,11 @@ export const ListCard = ({ project }: ListCardProps) => {
     return (
         <div className="relative h-full cursor-pointer flex gap-4 overflow-hidden bg-white border rounded-md p-4 shadow-md">
 
-            <div onClick={() => router.push(`/${stringToSlug(project.id)}`)} className="flex gap-4 w-full pr-8">
+            <div onClick={() => router.push(`/${stringToSlug(project.id)}`)} className="flex gap-4 w-full">
 
                 <div className="flex flex-col w-full justify-between">
                     <div className="flex w-full items-center justify-between">
-                        <span className="text-lg sm:text-xl font-medium">{project.title}</span>
+                        <span className="text-lg sm:text-xl font-medium mr-8">{project.title}</span>
                     </div>
                     
                     <div className="flex flex-col font-light w-full h-full justify-between items-stretch">
@@ -58,7 +58,7 @@ export const ListCard = ({ project }: ListCardProps) => {
                             :
                             <>
                                 { project?.status && <div className="my-auto flex gap-2"><span className="opacity-50 font-light">status:</span><StatusIndicator status={project?.status} /></div> }
-                                <div className="scrollable-but-hidden-scrollbar flex items-center overflow-scroll">
+                                <div className="scrollable-but-hidden-scrollbar flex items-center overflow-scroll mr-8">
                                     { project?.categories?.map((tag, index) => (
                                         <div key={index} className="">
                                             <CategoryChip text={tag} index={index} />
