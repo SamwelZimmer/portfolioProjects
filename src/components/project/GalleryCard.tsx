@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Project } from "@/app/page";
-import { concatenateStringToLength } from "@/lib/helpers";
+import { Project } from "@/lib/types";
+import { Card } from "../ui/card";
 
 export interface GalleryCardProps {
   project: Project;
@@ -12,112 +12,96 @@ export interface GalleryCardProps {
 }
 
 export function GalleryCard({ project, details }: GalleryCardProps) {
-  const [shouldAnimate, setShouldAnimate] = useState(false);
-  const [seedValue, setSeedValue] = useState(0);
-  let intervalRef = useRef<number | null>(null);
+  const [transformStyle, setTransformStyle] = useState("");
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
 
-  const handleMouseEnter = () => {
-    setShouldAnimate(true);
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (cardRef.current) {
+      const rect = cardRef.current.getBoundingClientRect();
 
-    setTimeout(() => {
-      setShouldAnimate(false);
-    }, 800);
+      // Calculate mouse position relative to the card
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // Calculate percentage position
+      const xPercent = (x / rect.width) * 100;
+      const yPercent = (y / rect.height) * 100;
+
+      // Calculate transform values (adjust the multiplier to control the movement intensity)
+      const xMove = ((xPercent - 50) / 50) * 5; // Moves between -5% to 5%
+      const yMove = ((yPercent - 50) / 50) * 5; // Moves between -5% to 5%
+
+      setTransformStyle(`translate(${xMove}%, ${yMove}%) scale(1.1)`);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    // Reset the transform when the mouse leaves the card
+    setTransformStyle("");
   };
 
   const handleClick = () => {
     router.push(project.id);
   };
 
-  useEffect(() => {
-    if (shouldAnimate) {
-      // if shouldAnimate is true, start an interval to update the seed value
-      intervalRef.current = window.setInterval(() => {
-        setSeedValue((prevSeed) => (prevSeed + 1) % 100);
-      }, 10);
-    } else {
-      // if shouldAnimate is false, clear the interval
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    }
-
-    // clean up on component unmount
-    return () => {
-      if (intervalRef.current !== null) {
-        window.clearInterval(intervalRef.current);
-      }
-    };
-  }, [shouldAnimate]);
-
   let brief =
     "I haven't written anything about this project yet. Don't hold your breath.";
   if (project?.summary) {
-    brief = concatenateStringToLength(project.summary, 60) + "...";
+    brief = project.summary;
   }
 
   return (
-    <>
-      <svg style={{ display: "none" }} key={seedValue}>
-        <defs>
-          <filter id="noise">
-            <feTurbulence
-              baseFrequency="0.7,0.8"
-              seed={seedValue}
-              type="fractalNoise"
-              result="static"
-            ></feTurbulence>
-            <feDisplacementMap in="SourceGraphic" in2="static" scale={20}>
-              <animate
-                attributeName="scale"
-                values="0;40;0"
-                dur="800ms"
-                repeatCount="1"
-                onAnimationStart={handleMouseEnter}
-              />
-            </feDisplacementMap>
-          </filter>
-        </defs>
-      </svg>
-
-      <div
-        onClick={handleClick}
-        onMouseEnter={handleMouseEnter}
-        id="card"
-        className="relative border-2 border-slate-200 rounded-md bg-slate-400 h-full aspect-[3/2] shadow-md box-border my-auto"
-      >
-        {project.coverPhoto ? (
-          <Image
-            src={project.coverPhoto}
-            alt="project cover photo"
-            width={1000}
-            height={700}
-          />
-        ) : (
-          <img
-            src="https://images.unsplash.com/photo-1679626951853-60e909d288ac?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
-            alt="Neon sign in woods"
-          />
+    <Card
+      ref={cardRef}
+      onClick={handleClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="gallery-card relative border-2 border-border h-full aspect-[3/2] my-auto overflow-hidden cursor-pointer"
+    >
+      {project.coverPhoto ? (
+        <Image
+          src={project.coverPhoto}
+          alt="project cover photo"
+          width={1000}
+          height={700}
+          className="rounded-none"
+          style={{
+            transform: transformStyle,
+            transition: "transform 0.1s ease-out",
+            willChange: "transform",
+          }}
+        />
+      ) : (
+        <img
+          src="https://images.unsplash.com/photo-1679626951853-60e909d288ac"
+          alt="Neon sign in woods"
+          style={{
+            transform: transformStyle,
+            transition: "transform 0.1s ease-out",
+            willChange: "transform",
+          }}
+        />
+      )}
+      <div className="absolute bottom-3 left-6 z-10 w-[calc(100%-48px)] text-text">
+        {details !== "small" && (
+          <span className="font-semibold">{project.title}</span>
         )}
-        <div className="absolute bottom-3 left-6 z-10 text-white">
-          {details != "small" && <span className="">{project.title}</span>}
-          {details == "large" && (
-            <p className="opacity-50 font-light">{brief}</p>
-          )}
-        </div>
-
-        {details != "small" && (
-          <div
-            className={`absolute flex flex-col bottom-0 left-0 w-full ${
-              details == "large" ? "h-28" : "h-16"
-            }`}
-          >
-            <div className="w-full h-1/4 bg-gradient-to-t from-black/30 to-black/0" />
-            <div className="w-full h-3/4 bg-gradient-to-t from-black to-black/30" />
-          </div>
+        {details === "large" && (
+          <p className="text-muted-foreground line-clamp-1">{brief}</p>
         )}
       </div>
-    </>
+
+      {details !== "small" && (
+        <div
+          className={`absolute flex flex-col bottom-0 left-0 w-full ${
+            details === "large" ? "h-20" : "h-14"
+          }`}
+        >
+          <div className="absolute w-full h-full bg-gradient-to-b from-transparent via-card/70 to-card" />
+        </div>
+      )}
+    </Card>
   );
 }

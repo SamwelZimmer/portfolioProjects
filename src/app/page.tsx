@@ -2,21 +2,8 @@ import Navbar from "@/components/nav/Navbar";
 import ViewChooser from "@/components/ViewChooser";
 import { getAllProjects } from "@/lib/firebase";
 import FilterMenu from "@/components/FilterMenu";
-
-export type StatusType = "completed" | "abandoned" | "postponed" | "ongoing";
-
-export interface Project {
-  id: string;
-  datetime: string;
-  title?: string;
-  body?: string;
-  status?: StatusType;
-  summary?: string;
-  coverPhoto?: string;
-  tags?: string;
-  link?: string;
-  categories?: Array<string>;
-}
+import { ThemeToggle } from "@/components/providers/theme-provider";
+import { Project } from "@/lib/types";
 
 type Props = {
   params: {};
@@ -67,6 +54,10 @@ export default async function Home(props: Props) {
 
         <ViewChooser projects={projects} />
       </main>
+
+      <div className="fixed bottom-4 right-4">
+        <ThemeToggle />
+      </div>
 
       <FilterMenu />
     </>

@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 
 import { similarProjects, getProject } from "@/lib/firebase";
-import { ListCard } from "./project/GalleryCard";
-import { Project } from "@/app/page";
+import { Project } from "@/lib/types";
+import ListCard from "@/components/project/ListCard";
 
 interface SimilarProjectsProps {
   docId: string;

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { Project } from "@/app/page";
 import StatusIndicator from "@/components/StatusIndicator";
 import {
   convertTimestampToDate,
@@ -13,7 +12,7 @@ import {
   stringToSlug,
   openInNewTab,
 } from "@/lib/helpers";
-import { CategoryChip } from "@/components/common/Chips";
+import { FilterChip } from "@/components/common/Chips";
 import { Card } from "@/components/ui/card";
 import {
   Tooltip,
@@ -21,6 +20,7 @@ import {
   TooltipContent,
 } from "@/components/ui/tooltip";
 import Icon from "@/components/common/Icon";
+import { Project } from "@/lib/types";
 
 interface ListCardProps {
   project: Project;
@@ -96,7 +96,7 @@ export default function ListCard({ project }: ListCardProps) {
         </div>
 
         <div className="flex justify-between pt-1.5">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center mt-1">
             {project.status && <StatusIndicator status={project.status} />}
 
             {dateObject && (
@@ -118,9 +118,9 @@ export default function ListCard({ project }: ListCardProps) {
             <span className="text-xs">Details</span>
             <Icon
               name="chevron"
-              className={`${
+              className={`mt-0.5 ${
                 showDetails && "rotate-90"
-              } transition-all duration-300`}
+              } transition-transform duration-300`}
             />
           </button>
         </div>
@@ -167,12 +167,12 @@ const Categories = ({
 
         {categories.map((tag, index) => (
           <div key={index}>
-            <CategoryChip
+            <FilterChip
               text={tag}
               index={index}
               className={`${
                 hovering
-                  ? "bg-input hover:bg-muted border-secondary-muted"
+                  ? "bg-card hover:bg-card/40 border-secondary-muted"
                   : "bg-muted hover:bg-input"
               }`}
             />

@@ -1,6 +1,6 @@
 import InfiniteCarousel from "./InfiniteCarousel";
 
-import { Project } from "@/app/page";
+import { Project } from "@/lib/types";
 import { repeatArrayToLength } from "@/lib/helpers";
 
 interface ScrollingViewProps {

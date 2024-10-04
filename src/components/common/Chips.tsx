@@ -4,7 +4,8 @@ import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { projectCategoriesAtom } from "@/atoms/projectCategoriesAtom";
+import { useAppContext } from "@/components/providers/app-provider";
+import Icon from "@/components/common/Icon";
 
 interface ChipProps {
   text: string;
@@ -13,22 +14,18 @@ interface ChipProps {
   className?: string;
 }
 
-export const CategoryChip = ({ text, index, className }: ChipProps) => {
-  const [projectCategories, setProjectCategories] = useRecoilState(
-    projectCategoriesAtom
-  );
-
-  const router = useRouter();
+export const FilterChip = ({ text, index, className }: ChipProps) => {
+  const { activeCategories, setActiveCategories } = useAppContext();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     e.preventDefault();
 
-    if (!projectCategories.includes(text)) {
-      setProjectCategories([text]);
+    let newCategories = activeCategories;
+    if (!activeCategories.includes(text)) {
+      newCategories = [...activeCategories, text];
+      setActiveCategories(newCategories);
     }
-
-    router.push(`/?categories=${text}`);
   };
 
   return (
@@ -36,7 +33,7 @@ export const CategoryChip = ({ text, index, className }: ChipProps) => {
       onClick={handleClick}
       id="badge-dismiss-default"
       className={cn(
-        "inline-flex w-max hover:underline cursor-pointer items-center px-2 py-1 mr-2 text-xs font-medium text-text border border-border rounded-full bg-muted hover:bg-input",
+        "inline-flex w-max hover:underline cursor-pointer items-center px-2.5 py-1 mr-2 text-xs font-medium border border-border rounded-full bg-muted hover:bg-input",
         className
       )}
     >
@@ -45,50 +42,18 @@ export const CategoryChip = ({ text, index, className }: ChipProps) => {
   );
 };
 
-export const FilterChip = ({ text, index }: ChipProps) => {
-  const [projectCategories, setProjectCategories] = useRecoilState(
-    projectCategoriesAtom
-  );
+export const AppliedFiltersChip = ({ text, index, className }: ChipProps) => {
+  const { activeCategories, setActiveCategories } = useAppContext();
 
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    let newCategories = projectCategories;
-    if (!projectCategories.includes(text)) {
-      newCategories = [...projectCategories, text];
-      setProjectCategories(newCategories);
-    }
-
-    router.push(`/?categories=${newCategories.join(",")}`);
-  };
-
-  return (
-    <span
-      onClick={handleClick}
-      id="badge-dismiss-default"
-      className="inline-flex w-max hover:underline cursor-pointer items-center px-2 py-1 mr-2 text-sm font-medium bg-slate-400 text-white rounded"
-    >
-      {text}
-    </span>
-  );
-};
-
-export const AppliedFiltersChip = ({ text, index }: ChipProps) => {
-  const [projectCategories, setProjectCategories] = useRecoilState(
-    projectCategoriesAtom
-  );
-
-  const router = useRouter();
-
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-
-    let newCategories = projectCategories;
-    if (projectCategories.includes(text)) {
-      newCategories = projectCategories.filter((category) => category !== text);
-      setProjectCategories(newCategories);
+    let newCategories = activeCategories;
+    if (activeCategories.includes(text)) {
+      newCategories = activeCategories.filter((category) => category !== text);
+      setActiveCategories(newCategories);
     }
 
     if (newCategories.length === 0) {
@@ -102,31 +67,18 @@ export const AppliedFiltersChip = ({ text, index }: ChipProps) => {
     <span
       onClick={handleClick}
       id="badge-dismiss-default"
-      className="inline-flex w-max cursor-pointer items-center px-2 py-1 mr-2 text-sm font-medium bg-slate-800 text-white rounded"
+      className={cn(
+        "inline-flex w-max hover:underline cursor-pointer items-center px-2.5 py-1 mr-2 gap-1 text-xs font-medium border border-border rounded-full bg-foreground hover:bg-accent-foreground text-muted",
+        className
+      )}
     >
       {text}
 
-      <button
-        type="button"
-        className="inline-flex items-center p-0.5 ml-2 text-sm text-neutral-2 bg-transparent rounded-sm hover:bg-black hover:text-white"
-        data-dismiss-target="#badge-dismiss-default"
-        aria-label="Remove"
-      >
-        <svg
-          aria-hidden="true"
-          className="w-3.5 h-3.5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-            clipRule="evenodd"
-          ></path>
-        </svg>
-        <span className="sr-only">Remove badge</span>
-      </button>
+      <Icon
+        name="cancel"
+        size={12}
+        className="text-muted-foreground hover:text-accent"
+      />
     </span>
   );
 };

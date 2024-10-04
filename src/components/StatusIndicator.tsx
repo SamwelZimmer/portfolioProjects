@@ -1,8 +1,4 @@
-import { AiFillCheckCircle, AiOutlineCalendar } from "react-icons/ai";
-import { GiSinkingShip } from "react-icons/gi";
-import { CgSandClock } from "react-icons/cg";
-
-import { StatusType } from "@/app/page";
+import { StatusType } from "@/lib/types";
 import {
   Tooltip,
   TooltipContent,
@@ -22,7 +18,7 @@ export default function StatusIndicator({ status }: StatusIndicatorProps) {
         <div className="flex items-center">
           <div style={{ color: statusIcons.colour[status] }}>
             <Icon
-              name={statusIcons.icon[status]}
+              name={statusIcons.icon[status] as IconMap}
               className="w-4 text-muted-foreground"
               size={20}
             />
@@ -37,7 +33,7 @@ export default function StatusIndicator({ status }: StatusIndicatorProps) {
 }
 
 const statusIcons: {
-  icon: IconMap;
+  icon: Record<StatusType, IconMap>;
   colour: Record<StatusType, string>;
 } = {
   icon: {

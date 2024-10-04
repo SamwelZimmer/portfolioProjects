@@ -1,22 +1,20 @@
 "use client";
 
-import { useRecoilState } from "recoil";
-
-import { listViewAtom } from "../atoms/listViewAtom";
 import ProjectListView from "./ProjectListView";
 import ProjectGalleryView from "./ProjectGalleryView";
-import { Project } from "@/app/page";
+import { Project } from "@/lib/types";
+import { useAppContext } from "@/components/providers/app-provider";
 
 interface ViewChooserProps {
   projects: Project[];
 }
 
 export default function ViewChooser({ projects }: ViewChooserProps) {
-  const [showListView, _] = useRecoilState(listViewAtom);
+  const { isListView } = useAppContext();
 
   return (
     <>
-      {showListView ? (
+      {isListView ? (
         <ProjectListView projects={projects} />
       ) : (
         <ProjectGalleryView projects={projects} />

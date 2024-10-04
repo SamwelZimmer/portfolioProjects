@@ -5,6 +5,8 @@ import { Source_Serif_4 as FontSerif } from "next/font/google";
 import "./globals.css";
 import RecoilRootWrapper from "./RecoilRootWrapper";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { AppProvider } from "@/components/providers/app-provider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -31,9 +33,17 @@ export default function RootLayout({
       <body
         className={`${fontSans.variable} ${fontSerif.variable} font-sans antialiased bg-background`}
       >
-        <TooltipProvider>
-          <RecoilRootWrapper>{children}</RecoilRootWrapper>
-        </TooltipProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          disableTransitionOnChange
+        >
+          <AppProvider>
+            <TooltipProvider>
+              <RecoilRootWrapper>{children}</RecoilRootWrapper>
+            </TooltipProvider>
+          </AppProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

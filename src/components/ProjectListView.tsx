@@ -1,6 +1,6 @@
 "use client";
 
-import { Project } from "@/app/page";
+import { Project } from "@/lib/types";
 import ListCard from "@/components/project/ListCard";
 
 interface ProjectListViewProps {

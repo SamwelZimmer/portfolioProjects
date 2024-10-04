@@ -10,7 +10,6 @@ import ReactMarkdown from "react-markdown";
 import { getProject } from "@/lib/firebase";
 import BackButton from "@/components/BackButton";
 import SimilarProjects from "@/components/SimilarProjects";
-import { Project } from "../page";
 import {
   convertTimestampToDate,
   concatenateStringToLength,
@@ -18,9 +17,10 @@ import {
   openInNewTab,
 } from "@/lib/helpers";
 import { DefaultSpinner, ImagePlaceholder } from "@/components/Loaders";
-import { CategoryChip } from "@/components/common/Chips";
+import { FilterChip } from "@/components/common/Chips";
 import HomeButton from "@/components/HomeButton";
 import StatusIndicator from "@/components/StatusIndicator";
+import { Project } from "@/lib/types";
 
 export default function ProjectPage() {
   const [content, setContent] = useState<Project | null>(null);
@@ -119,7 +119,7 @@ export default function ProjectPage() {
             <div className="scrollable-but-hidden-scrollbar flex items-center overflow-scroll">
               {content?.categories?.map((tag, index) => (
                 <div key={index} className="">
-                  <CategoryChip text={tag} index={index} />
+                  <FilterChip text={tag} index={index} />
                 </div>
               ))}
             </div>

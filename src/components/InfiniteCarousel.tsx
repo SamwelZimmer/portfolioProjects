@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from "react";
 
 import { GalleryCard } from "./project/GalleryCard";
-import { Project } from "@/app/page";
+import { Project } from "@/lib/types";
 
 interface InfiniteCarouselProps {
   projects: Project[];
