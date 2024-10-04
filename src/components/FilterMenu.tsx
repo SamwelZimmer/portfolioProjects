@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 import { FilterChip, AppliedFiltersChip } from "@/components/common/Chips";
@@ -9,6 +9,7 @@ import Icon from "./common/Icon";
 
 export default function FilterMenu() {
   const [open, setOpen] = useState(false);
+  const [timePassed, setTimePassed] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const { activeCategories, setActiveCategories } = useAppContext();
 
@@ -22,8 +23,18 @@ export default function FilterMenu() {
     exit: { opacity: 1, y: "100%" },
   };
 
-  const handleClose = () => {
+  useEffect(() => {
+    let timerId: NodeJS.Timeout;
     if (open) {
+      timerId = setTimeout(() => setTimePassed(true), 500);
+    } else {
+      setTimePassed(false);
+    }
+    return () => clearTimeout(timerId);
+  }, [open]);
+
+  const handleClose = () => {
+    if (open && timePassed) {
       setOpen(false);
     } else {
       setOpen(true);
@@ -32,14 +43,21 @@ export default function FilterMenu() {
 
   return (
     <>
-      {open && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className={`fixed top-0 left-0 w-screen h-screen bg-black/50 backdrop-blur-sm`}
-        />
-      )}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            onClick={(e) => {
+              // e.stopPropagation();
+              // e.preventDefault();
+              setOpen(false);
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className={`fixed top-0 left-0 w-screen h-screen bg-black/50 backdrop-blur-sm`}
+          />
+        )}
+      </AnimatePresence>
 
       <motion.div
         animate={isVisible ? "enter" : "exit"}
@@ -49,7 +67,7 @@ export default function FilterMenu() {
           stiffness: 700,
           damping: 40,
         }}
-        className={`fixed ${
+        className={`fixed z-10 ${
           isVisible ? "flex" : "hidden"
         } flex-col bottom-0 left-0 w-full pointer-events-none`}
       >
@@ -58,7 +76,6 @@ export default function FilterMenu() {
           variants={variants}
           className="bg-popover border-t pointer-events-auto"
           onMouseEnter={() => setOpen(true)}
-          onMouseLeave={() => setOpen(false)}
           transition={{
             type: "spring",
             stiffness: 700,
@@ -66,7 +83,11 @@ export default function FilterMenu() {
           }}
         >
           <div
-            onClick={handleClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              // setOpen(true);
+              handleClose();
+            }}
             className="absolute -top-[32px] left-1/2 -translate-x-1/2 text-text text-sm border border-b-popover bg-popover w-32 rounded-t-lg flex justify-center gap-2 items-center text-gray-400 pb-1 pt-1.5 cursor-pointer"
           >
             <div className="relative h-full">

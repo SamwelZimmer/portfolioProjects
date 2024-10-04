@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Project } from "@/lib/types";
 import { Card } from "../ui/card";
+import Icon from "../common/Icon";
 
 export interface GalleryCardProps {
   project: Project;
@@ -12,6 +13,7 @@ export interface GalleryCardProps {
 }
 
 export function GalleryCard({ project, details }: GalleryCardProps) {
+  const [isLoaded, setIsLoaded] = useState(false);
   const [transformStyle, setTransformStyle] = useState("");
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -60,13 +62,23 @@ export function GalleryCard({ project, details }: GalleryCardProps) {
       onMouseLeave={handleMouseLeave}
       className="gallery-card relative border-2 border-border h-full aspect-[3/2] my-auto overflow-hidden cursor-pointer"
     >
+      {!isLoaded && (
+        <div className="absolute top-0 left-0 w-full h-full bg-muted z-50 flex items-center justify-center">
+          <Icon
+            name="spinner-2"
+            className="animate-spin text-muted-foreground"
+          />
+        </div>
+      )}
+
       {project.coverPhoto ? (
         <Image
           src={project.coverPhoto}
           alt="project cover photo"
-          width={1000}
-          height={700}
           className="rounded-none"
+          fill
+          onLoad={() => setIsLoaded(true)}
+          loading="lazy"
           style={{
             transform: transformStyle,
             transition: "transform 0.1s ease-out",

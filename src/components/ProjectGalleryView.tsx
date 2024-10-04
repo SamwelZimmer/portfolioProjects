@@ -11,7 +11,7 @@ export default function ProjectGalleryView({ projects }: ScrollingViewProps) {
   const extendedProjects = repeatArrayToLength(projects, 50);
 
   return (
-    <div className="h-full w-full pt-4">
+    <div className="h-full w-full pt-4 relative">
       <InfiniteCarousel
         projects={extendedProjects}
         speed={8}

@@ -48,18 +48,20 @@ export default async function Home(props: Props) {
   return (
     <>
       <main className="flex fixed h-screen w-screen flex-col items-center pt-12 bg-background">
-        <div className="w-full pb-6 flex justify-between items-center z-20 shadow-md">
+        <div className="w-full pb-6 flex justify-between items-center z-20 shadow-md border-b">
           <Navbar />
         </div>
 
         <ViewChooser projects={projects} />
       </main>
 
-      <div className="fixed bottom-4 right-4">
+      <div className="fixed z-10 bottom-4 right-4">
         <ThemeToggle />
       </div>
 
       <FilterMenu />
+
+      <div className="fixed bottom-0 left-0 w-screen bg-gradient-to-t from-background to-transparent h-16 z-0" />
     </>
   );
 }
