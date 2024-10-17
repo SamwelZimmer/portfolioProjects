@@ -2,7 +2,6 @@ import Navbar from "@/components/nav/Navbar";
 import ViewChooser from "@/components/ViewChooser";
 import { getAllProjects } from "@/lib/firebase";
 import FilterMenu from "@/components/FilterMenu";
-import { ThemeToggle } from "@/components/providers/theme-provider";
 import { Project } from "@/lib/types";
 
 type Props = {
@@ -54,10 +53,6 @@ export default async function Home(props: Props) {
 
         <ViewChooser projects={projects} />
       </main>
-
-      <div className="fixed z-10 bottom-4 right-4">
-        <ThemeToggle />
-      </div>
 
       <FilterMenu />
 

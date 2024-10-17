@@ -12,7 +12,6 @@ import {
   stringToSlug,
   openInNewTab,
 } from "@/lib/helpers";
-import { FilterChip } from "@/components/common/Chips";
 import { Card } from "@/components/ui/card";
 import {
   Tooltip,
@@ -21,12 +20,22 @@ import {
 } from "@/components/ui/tooltip";
 import Icon from "@/components/common/Icon";
 import { Project } from "@/lib/types";
+import CategoryChips from "@/components/CategoryChips";
+import { cn } from "@/lib/utils";
 
 interface ListCardProps {
   project: Project;
+  className?: string;
+  style?: React.CSSProperties;
+  loading?: boolean;
 }
 
-export default function ListCard({ project }: ListCardProps) {
+export default function ListCard({
+  project,
+  className,
+  style,
+  loading = false,
+}: ListCardProps) {
   const [showDetails, setShowDetails] = useState(false);
   const [hovering, setHovering] = useState(false);
 
@@ -45,8 +54,24 @@ export default function ListCard({ project }: ListCardProps) {
     dateObject = convertTimestampToDate(project?.datetime);
   }
 
+  if (loading) {
+    return (
+      <Card
+        className={cn(
+          `w-full px-4 py-3 rounded-lg flex flex-col bg-card cursor-pointer animate-out animate-pulse`,
+          className
+        )}
+        style={style}
+      ></Card>
+    );
+  }
+
   return (
-    <Link href={`/${stringToSlug(project.id)}`}>
+    <Link
+      href={`/${stringToSlug(project.id)}`}
+      style={style}
+      className={className}
+    >
       <Card
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
@@ -84,7 +109,7 @@ export default function ListCard({ project }: ListCardProps) {
                   </p>
 
                   {project.categories && (
-                    <Categories
+                    <CategoryChips
                       categories={project.categories}
                       hovering={hovering}
                     />
@@ -128,57 +153,3 @@ export default function ListCard({ project }: ListCardProps) {
     </Link>
   );
 }
-
-const Categories = ({
-  categories,
-  hovering,
-}: {
-  categories: string[];
-  hovering: boolean;
-}) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [showGradient, setShowGradient] = useState(false);
-
-  const handleScroll = () => {
-    if (scrollRef.current) {
-      setShowGradient(scrollRef.current.scrollLeft > 0);
-    }
-  };
-
-  return (
-    <div className="relative">
-      <div
-        ref={scrollRef}
-        onScroll={handleScroll}
-        className="scrollable-but-hidden-scrollbar w-[calc(100%-5px)] flex items-center overflow-scroll"
-      >
-        {showGradient && (
-          <div
-            className={`absolute left-0 top-0 w-4 h-full bg-gradient-to-r ${
-              hovering ? "from-muted" : "from-card"
-            } to-transparent z-10`}
-          />
-        )}
-        <div
-          className={`absolute right-[5px] top-0 w-4 h-full bg-gradient-to-l ${
-            hovering ? "from-muted" : "from-card"
-          } to-transparent z-10`}
-        />
-
-        {categories.map((tag, index) => (
-          <div key={index}>
-            <FilterChip
-              text={tag}
-              index={index}
-              className={`${
-                hovering
-                  ? "bg-card hover:bg-card/40 border-secondary-muted"
-                  : "bg-muted hover:bg-input"
-              }`}
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};

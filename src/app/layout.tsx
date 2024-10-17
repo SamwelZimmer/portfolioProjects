@@ -5,7 +5,10 @@ import { Source_Serif_4 as FontSerif } from "next/font/google";
 import "./globals.css";
 import RecoilRootWrapper from "./RecoilRootWrapper";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { ThemeProvider } from "@/components/providers/theme-provider";
+import {
+  ThemeProvider,
+  ThemeToggle,
+} from "@/components/providers/theme-provider";
 import { AppProvider } from "@/components/providers/app-provider";
 
 const fontSans = FontSans({
@@ -41,6 +44,10 @@ export default function RootLayout({
           <AppProvider>
             <TooltipProvider>
               <RecoilRootWrapper>{children}</RecoilRootWrapper>
+
+              <div className="fixed z-10 bottom-4 right-4">
+                <ThemeToggle />
+              </div>
             </TooltipProvider>
           </AppProvider>
         </ThemeProvider>

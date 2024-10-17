@@ -7,7 +7,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMounted } from "@/hooks/use-mounted";
 import ServerLoadingPage from "@/components/misc/ServerLoadingPage";
 
@@ -31,12 +31,15 @@ export const useAppContext = () => {
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const mounted = useMounted();
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [isListView, setIsListView] = useState(true);
   const [activeCategories, setActiveCategories] = useState<string[]>([]);
 
   useEffect(() => {
+    if (pathname !== "/") return;
+
     if (activeCategories && activeCategories.length > 0) {
       router.push(`/?categories=${activeCategories.join(",")}`);
     } else {

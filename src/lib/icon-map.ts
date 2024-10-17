@@ -1,4 +1,5 @@
 import AiCode from "@/assets/icons/AiCode";
+import Arrow from "@/assets/icons/Arrow";
 import ArrowRedirect from "@/assets/icons/ArrowRedirect";
 import BadgeAward from "@/assets/icons/BadgeAward";
 import BadgeCheck from "@/assets/icons/BadgeCheck";
@@ -30,6 +31,7 @@ import Waste from "@/assets/icons/Waste";
 
 export const icons = {
   "ai-code": AiCode,
+  arrow: Arrow,
   "arrow-direct": ArrowRedirect,
   "badge-award": BadgeAward,
   "badge-check": BadgeCheck,
