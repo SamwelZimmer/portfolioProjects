@@ -222,8 +222,9 @@ const categories = {
     "web",
     "frontend",
     "full-stack",
+    "mobile",
   ],
-  purposes: ["university", "competition", "tutorial", "venture"],
+  purposes: ["university", "competition", "tutorial", "venture", "tool"],
   technologies: [
     "python",
     "cloud",
@@ -233,5 +234,6 @@ const categories = {
     "machine learning",
     "3D",
     "blockchain",
+    "sql",
   ],
 };

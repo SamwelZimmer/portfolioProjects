@@ -15,12 +15,12 @@ export default function BackButton({ className }: { className?: string }) {
         variant="secondary"
         onClick={() => router.push("/")}
         className={cn(
-          "text-muted-foreground hover:text-accent-foreground p-0 aspect-square border border-border rounded-2xl rounded-bl-sm",
+          "text-muted-foreground hover:text-accent-foreground p-0 aspect-square border border-border rounded-2xl rounded-bl-sm shadow-lg",
           className
         )}
       >
         <TooltipTrigger className="w-full h-full flex items-center justify-center">
-          <Icon name="chevron" className="text-inherit rotate-90" />
+          <Icon name="chevron" className="text-inherit rotate-90 -ml-0.5" />
         </TooltipTrigger>
       </Button>
       <TooltipContent>

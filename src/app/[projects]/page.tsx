@@ -2,9 +2,9 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
+import ReactPlayer from "react-player";
 
 import { cn } from "@/lib/utils";
 import { getProject } from "@/lib/firebase";
@@ -16,7 +16,6 @@ import {
   monthNumberToString,
   openInNewTab,
 } from "@/lib/helpers";
-import { DefaultSpinner, ImagePlaceholder } from "@/components/Loaders";
 import StatusIndicator from "@/components/StatusIndicator";
 import CategoryChips from "@/components/CategoryChips";
 import { Project } from "@/lib/types";
@@ -74,7 +73,7 @@ export default function ProjectPage() {
     <>
       <BackButton className="fixed z-10 bottom-4 left-4" />
 
-      <main className="py-8 sm:py-24 px-4 sm:px-0 w-full sm:w-[400px] md:w-[600px] mx-auto flex flex-col">
+      <main className="py-8 sm:py-24 px-4 sm:px-0 w-full sm:max-w-md lg:max-w-xl mx-auto flex flex-col">
         <div className="w-full flex justify-between items-center">
           <span className="text-sm text-muted-foreground font-light">
             {concatenateStringToLength(
@@ -123,9 +122,16 @@ export default function ProjectPage() {
             : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis enim quisquam magni"}
         </p>
 
-        <CoverImage imageUrl={content?.coverPhoto} />
+        {content?.ytVideos ? (
+          <YoutubeVideoPlayer
+            url={content.ytVideos[0]}
+            coverImg={content?.coverPhoto}
+          />
+        ) : (
+          <CoverImage imageUrl={content?.coverPhoto} />
+        )}
 
-        <div className="my-auto flex gap-2 mt-4">
+        <div className="my-auto flex gap-1 mt-4">
           <StatusIndicator
             status={content && content.status ? content.status : "ongoing"}
           />
@@ -134,11 +140,13 @@ export default function ProjectPage() {
           </span>
         </div>
 
-        {content && (
-          <ReactMarkdown className="markdown mt-4">
-            {content.body}
-          </ReactMarkdown>
-        )}
+        <ReactMarkdown
+          className={`markdown mt-4 ${!content?.body && "opacity-50"}`}
+        >
+          {content
+            ? content.body
+            : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore necessitatibus perferendis nobis, quam quidem delectus laboriosam nemo sapiente voluptas! Error totam numquam voluptatibus rerum. Blanditiis voluptatibus voluptate amet necessitatibus excepturi illo molestiae, sunt itaque. Necessitatibus, modi ea distinctio tenetur soluta similique at, omnis aliquid animi nam voluptatem ipsa eveniet vitae?"}
+        </ReactMarkdown>
 
         <div className="flex flex-col gap-1 mt-12">
           <span className="text-sm text-muted-foreground">
@@ -163,6 +171,47 @@ export default function ProjectPage() {
     </>
   );
 }
+
+import { createPortal } from "react-dom";
+
+const YoutubeVideoPlayer = ({
+  coverImg,
+  url,
+}: {
+  coverImg?: string;
+  url: string;
+}) => {
+  const [showCover, setShowCover] = useState(true);
+
+  return (
+    <div className="relative rounded-lg overflow-hidden w-full aspect-video">
+      {showCover && coverImg && (
+        <div className="absolute top-0 left-0 w-full max-w- aspect-video z-[99999]">
+          <CoverImage imageUrl={coverImg} />
+          <div
+            onClick={() => setShowCover(false)}
+            className="absolute top-0 left-0 w-full h-full bg-black/20 hover:bg-black/30 flex items-center justify-center hover:text-white/50 text-white cursor-pointer"
+          >
+            <Icon name="play-circle" size={32} className="text-inherit" />
+          </div>
+        </div>
+      )}
+
+      <div className="absolute top-0 left-0 w-full h-full object-cover">
+        <ReactPlayer
+          playsinline
+          url={`https://www.youtube.com/watch?v=${url}`}
+          playing={!showCover}
+          loop={true}
+          controls={true}
+          muted={true}
+          width="100%"
+          height="100%"
+        />
+      </div>
+    </div>
+  );
+};
 
 const CoverImage = ({ imageUrl }: { imageUrl?: string }) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -205,7 +254,7 @@ function ExternalLink({
     <Tooltip>
       <TooltipTrigger
         className={`${
-          isFixed && "fixed top-4 right-4 z-20"
+          isFixed && "fixed top-[18px] right-4 z-20"
         } text-muted-foreground hover:text-primary hover:underline text-sm font-light`}
       >
         {isFixed ? (
@@ -213,12 +262,15 @@ function ExternalLink({
             variant="secondary"
             onClick={() => openInNewTab(link)}
             className={cn(
-              " text-muted-foreground hover:text-accent-foreground p-0 aspect-square border border-border rounded-2xl rounded-tr-sm",
+              " text-muted-foreground hover:text-accent-foreground p-0 aspect-square border border-border rounded-2xl rounded-tr-sm shadow-lg",
               className
             )}
           >
             <TooltipTrigger className="w-full h-full flex items-center justify-center">
-              <Icon name="arrow-direct" className="text-inherit mb-px pl-px" />
+              <Icon
+                name="arrow-direct"
+                className="text-inherit pl-0.5 mb-0.5"
+              />
             </TooltipTrigger>
           </Button>
         ) : (

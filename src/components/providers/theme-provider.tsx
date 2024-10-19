@@ -18,7 +18,7 @@ export const ThemeToggle = () => {
     <Button
       variant="secondary"
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="text-muted-foreground hover:text-accent-foreground p-0 aspect-square border border-border rounded-2xl rounded-br-sm"
+      className="text-muted-foreground hover:text-accent-foreground p-0 aspect-square border border-border rounded-2xl rounded-br-sm shadow-lg"
     >
       <Icon
         name={theme === "light" ? "sun" : "moon-full"}

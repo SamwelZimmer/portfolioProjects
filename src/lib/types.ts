@@ -10,5 +10,6 @@ export type Project = {
   coverPhoto?: string;
   tags?: string;
   link?: string;
-  categories?: Array<string>;
+  categories?: string[];
+  ytVideos?: string[];
 };

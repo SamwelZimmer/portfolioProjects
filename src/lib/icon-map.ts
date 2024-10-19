@@ -19,6 +19,7 @@ import List from "@/assets/icons/List";
 import MoonFull from "@/assets/icons/MoonFull";
 import PaperAirplane from "@/assets/icons/PaperAirplane";
 import Pencil from "@/assets/icons/Pencil";
+import PlayCircle from "@/assets/icons/PlayCircle";
 import Spinner from "@/assets/icons/Spinner";
 import Spinner2 from "@/assets/icons/Spinner2";
 import Star from "@/assets/icons/Star";
@@ -51,6 +52,7 @@ export const icons = {
   "moon-full": MoonFull,
   "paper-airplane": PaperAirplane,
   pencil: Pencil,
+  "play-circle": PlayCircle,
   spinner: Spinner,
   "spinner-2": Spinner2,
   star: Star,
