@@ -3,6 +3,7 @@ import ViewChooser from "@/components/ViewChooser";
 import { getAllProjects } from "@/lib/firebase";
 import FilterMenu from "@/components/FilterMenu";
 import { Project } from "@/lib/types";
+import { ThemeToggle } from "@/components/providers/theme-provider";
 
 type Props = {
   params: {};
@@ -46,6 +47,10 @@ export default async function Home(props: Props) {
 
   return (
     <>
+      <div className="fixed z-10 bottom-4 right-4">
+        <ThemeToggle />
+      </div>
+
       <main className="flex fixed h-screen w-screen flex-col items-center pt-12 bg-background">
         <div className="w-full pb-6 flex justify-between items-center z-20 shadow-md border-b">
           <Navbar />

@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
@@ -26,6 +26,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { useTheme } from "next-themes";
 
 export default function ProjectPage() {
   const [content, setContent] = useState<Project | null>(null);
@@ -71,9 +73,12 @@ export default function ProjectPage() {
 
   return (
     <>
-      <BackButton className="fixed z-10 bottom-4 left-4" />
+      <BottomNavigation
+        project={content}
+        className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 w-[calc(100%-32px)] sm:w-full sm:max-w-md lg:max-w-xl"
+      />
 
-      <main className="py-8 sm:py-24 px-4 sm:px-0 w-full sm:max-w-md lg:max-w-xl mx-auto flex flex-col">
+      <main className="pt-8 pb-24 sm:py-24 px-4 sm:px-0 w-full sm:max-w-md lg:max-w-xl mx-auto flex flex-col">
         <div className="w-full flex justify-between items-center">
           <span className="text-sm text-muted-foreground font-light">
             {concatenateStringToLength(
@@ -87,19 +92,36 @@ export default function ProjectPage() {
           </span>
 
           {content?.link && (
-            <ExternalLink link={content.link} isFixed={isSticky} />
+            // <ExternalLink link={content.link} isFixed={isSticky} />
+
+            <Tooltip>
+              <TooltipTrigger
+                className={`text-muted-foreground hover:text-primary hover:underline text-sm font-light`}
+              >
+                <div
+                  onClick={() => content.link && openInNewTab(content.link)}
+                  className="flex items-center gap-1.5"
+                >
+                  <span>Visit</span>
+                  <Icon name="arrow-direct" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <span>View demo</span>
+              </TooltipContent>
+            </Tooltip>
           )}
         </div>
 
         <div ref={sentinelRef} />
 
-        <div className="pt-5 sm:pt-8 flex flex-col z-10 sticky top-0 bg-background">
+        <div className="pt-5 sm:pt-8 flex flex-col z-20 sticky top-0 bg-background">
           <div className="relative">
             <h1
               ref={titleRef}
               className={`${
                 !content?.title && "opacity-50"
-              } font-serif font-semibold text-3xl sm:text-4xl md:text-5xl text-foreground pb-2 ${
+              } font-serif font-semibold text-3xl sm:text-4xl md:text-5xl text-foreground pb-2  ${
                 isSticky ? "border-b" : ""
               }`}
             >
@@ -172,7 +194,63 @@ export default function ProjectPage() {
   );
 }
 
-import { createPortal } from "react-dom";
+const BottomNavigation = ({
+  className,
+  project,
+}: {
+  className: string;
+  project: Project | null;
+}) => {
+  const { theme, setTheme } = useTheme();
+  const router = useRouter();
+
+  return (
+    <Card
+      className={cn(
+        "bg-card text-muted-foreground h-11 border border-border rounded-b-md rounded-t-3xl sm:rounded-b-full sm:rounded-t-full shadow-lg flex items-center justify-between px-[3px]",
+        className
+      )}
+    >
+      <Button
+        onClick={() => router.push("/")}
+        variant="ghost"
+        className="rounded-t-[25px] rounded-bl-[3px] rounded-br-[20px] sm:rounded-full space-x-1 pl-2"
+      >
+        <Icon name="chevron" className="rotate-90" />
+        <p className="flex gap-1">
+          <span className="hidden lg:block">Back to</span>
+          <span className="capitalize lg:lowercase">projects</span>
+        </p>
+      </Button>
+
+      <div className="flex items-center">
+        {project && project.link && (
+          <Button
+            onClick={() => project.link && openInNewTab(project.link)}
+            variant="ghost"
+            className="rounded-full space-x-1.5 pr-2.5"
+          >
+            <p className="flex gap-1">Visit</p>
+            <Icon name="arrow-direct" />
+          </Button>
+        )}
+
+        {project?.link && <div className="h-4 bg-border w-px mx-1" />}
+
+        <Button
+          variant="ghost"
+          className="rounded-t-[28px] rounded-br-[3px] rounded-bl-[20px] sm:rounded-full w-9 p-0 h-[35px] sm:h-9 mt-px sm:mt-0"
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+        >
+          <Icon
+            name={theme === "light" ? "sun" : "moon-full"}
+            className="text-inherit"
+          />
+        </Button>
+      </div>
+    </Card>
+  );
+};
 
 const YoutubeVideoPlayer = ({
   coverImg,
@@ -186,7 +264,7 @@ const YoutubeVideoPlayer = ({
   return (
     <div className="relative rounded-lg overflow-hidden w-full aspect-video">
       {showCover && coverImg && (
-        <div className="absolute top-0 left-0 w-full max-w- aspect-video z-[99999]">
+        <div className="absolute top-0 left-0 w-full max-w- aspect-video z-10">
           <CoverImage imageUrl={coverImg} />
           <div
             onClick={() => setShowCover(false)}
@@ -240,52 +318,3 @@ const CoverImage = ({ imageUrl }: { imageUrl?: string }) => {
     </div>
   );
 };
-
-function ExternalLink({
-  link,
-  isFixed,
-  className,
-}: {
-  link: string;
-  isFixed?: boolean;
-  className?: string;
-}) {
-  return (
-    <Tooltip>
-      <TooltipTrigger
-        className={`${
-          isFixed && "fixed top-[18px] right-4 z-20"
-        } text-muted-foreground hover:text-primary hover:underline text-sm font-light`}
-      >
-        {isFixed ? (
-          <Button
-            variant="secondary"
-            onClick={() => openInNewTab(link)}
-            className={cn(
-              " text-muted-foreground hover:text-accent-foreground p-0 aspect-square border border-border rounded-2xl rounded-tr-sm shadow-lg",
-              className
-            )}
-          >
-            <TooltipTrigger className="w-full h-full flex items-center justify-center">
-              <Icon
-                name="arrow-direct"
-                className="text-inherit pl-0.5 mb-0.5"
-              />
-            </TooltipTrigger>
-          </Button>
-        ) : (
-          <div
-            onClick={() => openInNewTab(link)}
-            className="flex items-center gap-1.5"
-          >
-            <span>Visit</span>
-            <Icon name="arrow-direct" />
-          </div>
-        )}
-      </TooltipTrigger>
-      <TooltipContent>
-        <span>View demo</span>
-      </TooltipContent>
-    </Tooltip>
-  );
-}
