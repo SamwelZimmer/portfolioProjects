@@ -207,14 +207,14 @@ const BottomNavigation = ({
   return (
     <Card
       className={cn(
-        "bg-card text-muted-foreground h-11 border border-border rounded-b-md rounded-t-3xl sm:rounded-b-full sm:rounded-t-full shadow-lg flex items-center justify-between px-[3px]",
+        "bg-secondary text-secondary-foreground text-muted-foreground= h-11 border border-border rounded-b-md rounded-t-3xl sm:rounded-b-full sm:rounded-t-full shadow-lg flex items-center justify-between px-[3px]",
         className
       )}
     >
       <Button
         onClick={() => router.push("/")}
         variant="ghost"
-        className="rounded-t-[25px] rounded-bl-[3px] rounded-br-[20px] sm:rounded-full space-x-1 pl-2"
+        className="hover:bg-card rounded-t-[25px] rounded-bl-[3px] rounded-br-[20px] sm:rounded-full space-x-1 pl-2"
       >
         <Icon name="chevron" className="rotate-90" />
         <p className="flex gap-1">
@@ -228,7 +228,7 @@ const BottomNavigation = ({
           <Button
             onClick={() => project.link && openInNewTab(project.link)}
             variant="ghost"
-            className="rounded-full space-x-1.5 pr-2.5"
+            className="rounded-full space-x-1.5 pr-2.5 hover:bg-card"
           >
             <p className="flex gap-1">Visit</p>
             <Icon name="arrow-direct" />
@@ -239,7 +239,7 @@ const BottomNavigation = ({
 
         <Button
           variant="ghost"
-          className="rounded-t-[28px] rounded-br-[3px] rounded-bl-[20px] sm:rounded-full w-9 p-0 h-[35px] sm:h-9 mt-px sm:mt-0"
+          className="hover:bg-card rounded-t-[28px] rounded-br-[3px] rounded-bl-[20px] sm:rounded-full w-9 p-0 h-[35px] sm:h-9 mt-px sm:mt-0"
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >
           <Icon
